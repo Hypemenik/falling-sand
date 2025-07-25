@@ -1,0 +1,3 @@
+Plan:
+- make a grid with 2d array
+- then check how to make array
