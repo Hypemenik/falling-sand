@@ -109,9 +109,8 @@ int main()
     {
         window.clear(sf::Color::Black);
         
-        std:: optional event = window.pollEvent();
         
-        while(event){
+        while(const std::optional event = window.pollEvent()){
             if(event->is<sf::Event::Closed>()){
                 window.close();
             }
@@ -121,7 +120,7 @@ int main()
                 int gridX = localPosition.x / world.sandSize;
                 int gridY = localPosition.y / world.sandSize;
 
-               // world.placeSand(gridX, gridY);
+               world.placeSand(gridX, gridY);
             }
             else if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)){
                 if(toggleCounterMS > toggleThresholdMS){
