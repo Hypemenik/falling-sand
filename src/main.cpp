@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 
+
 class World{
     private:
     static const int width = 161, height = 161;
@@ -88,7 +89,6 @@ class World{
 int main()
 {
 
-   // create the window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Falling Sand Simulation", sf::Style::Close);
 
     window.setFramerateLimit(60);
@@ -104,7 +104,23 @@ int main()
     sf:: Clock clock; // to keep track of time
     bool isPaused = false; // to keep track of whether the simulation is paused
 
-    // run the program as long as the window is open
+
+    // font
+    sf::Font font;
+    if (!font.openFromFile("/Users/kacperolszewski/Desktop/Visual Studio Code projekty/falling sand 2/src/arial.ttf"))
+    {
+       std:: cout<< "Error loading font" << std ::endl;
+        return -1; // exit if font loading fails
+    }
+
+    sf::Text text(font);
+    text.setString("Choose color");
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::White);
+    text.setPosition({10, 570}); // position the text in the window
+
+
+
     while (window.isOpen())
     {
         window.clear(sf::Color::Black);
@@ -138,6 +154,8 @@ int main()
         countdownMS -= sec;
         toggleCounterMS += sec;
 
+
+
         if(countdownMS < 0.0f){
             if(!isPaused){
                 world.update(); // update the world only if not paused
@@ -146,6 +164,7 @@ int main()
         }
 
         world.draw(window); // draw the world
+        window.draw(text); // draw the text
         window.display(); // display the contents of the window
     }
 
