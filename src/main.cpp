@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -12,8 +11,12 @@ class World{
     int private_grid[width][height];
     int grid[width][height];
     
+    
     public:
     const float sandSize = 5;
+    sf::RectangleShape color1Rect;
+    sf::RectangleShape color2Rect;
+    sf::Color currentColor = sf::Color::Yellow;
 
     World(){
         for(int i = 0; i < width-1; i++)
@@ -21,6 +24,13 @@ class World{
                 private_grid[i][j] = 0;
                 grid[i][j] = 0;
             }
+        color1Rect.setSize(sf::Vector2f(30, 30));
+        color1Rect.setFillColor(sf::Color::Yellow);
+        color1Rect.setPosition({10, 560});
+
+        color2Rect.setSize(sf::Vector2f(30, 30));
+        color2Rect.setFillColor(sf::Color::Red);
+        color2Rect.setPosition({50, 560});
     }
     void update(){
         for(int i = 0; i < width-1; i++){
@@ -55,6 +65,8 @@ class World{
             }
         }
 
+    
+
     void draw(sf::RenderWindow& window){
         for(int i = 0; i < width-1; i++){
             for(int j = 0; j < height - 1; j++){
@@ -62,7 +74,7 @@ class World{
                     sf::RectangleShape shape = sf::RectangleShape();
 
                     shape.setSize(sf::Vector2f(sandSize, sandSize));
-                    shape.setFillColor(sf::Color::Yellow);
+                    shape.setFillColor(currentColor);
                     shape.setPosition({i * sandSize, j * sandSize});
                     window.draw(shape); // assuming 'window' is a valid sf::RenderWindow instance
                     }
@@ -70,6 +82,38 @@ class World{
                 }
             }
         }
+
+    bool isRectangleClicked(const sf::RectangleShape& rectangle, float mouseX, float mouseY) {
+        sf::FloatRect bounds = rectangle.getGlobalBounds();
+        if (bounds.contains(sf::Vector2f({mouseX, mouseY}))) {
+            return true;
+            std::cout<< "Rectangle clicked!" << std::endl;
+        }
+        return false;
+    }
+
+    void changeColor(int mouseX, int mouseY) {
+        if(isRectangleClicked(color1Rect, mouseX, mouseY)) {
+            currentColor = sf::Color::Yellow;
+             //chaning frame
+            color1Rect.setOutlineThickness(2);
+            color1Rect.setOutlineColor(sf::Color::White);
+            color2Rect.setOutlineThickness(0); 
+        } else if(isRectangleClicked(color2Rect, mouseX, mouseY)) {
+            currentColor = sf::Color::Red;
+            // chaning frame
+            color2Rect.setOutlineThickness(2);
+            color2Rect.setOutlineColor(sf::Color::White);
+            color1Rect.setOutlineThickness(0); 
+        }
+
+    }
+
+
+    void drawColors(sf::RenderWindow& window){
+        window.draw(color1Rect);
+        window.draw(color2Rect);
+    }
     
 
     void placeSand(int x, int y){
@@ -117,7 +161,7 @@ int main()
     text.setString("Choose color");
     text.setCharacterSize(24);
     text.setFillColor(sf::Color::White);
-    text.setPosition({10, 570}); // position the text in the window
+    text.setPosition({10, 535}); // position the text in the window
 
 
 
@@ -135,6 +179,7 @@ int main()
                 sf:: Vector2i localPosition = sf::Mouse::getPosition(window);
                 int gridX = localPosition.x / world.sandSize;
                 int gridY = localPosition.y / world.sandSize;
+                world.changeColor(localPosition.x, localPosition.y); // change color based on mouse position
 
                world.placeSand(gridX, gridY);
             }
@@ -165,6 +210,7 @@ int main()
 
         world.draw(window); // draw the world
         window.draw(text); // draw the text
+        world.drawColors(window); // draw the colors to chose
         window.display(); // display the contents of the window
     }
 
