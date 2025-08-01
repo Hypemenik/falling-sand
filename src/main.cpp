@@ -10,6 +10,7 @@ class World{
 
     int private_grid[width][height];
     int grid[width][height];
+    sf::Color colorGrid[width][height];
     
     
     public:
@@ -23,6 +24,7 @@ class World{
             for (int j = 0; j < height-1; j++){
                 private_grid[i][j] = 0;
                 grid[i][j] = 0;
+                colorGrid[i][j] = sf::Color::Transparent;
             }
         color1Rect.setSize(sf::Vector2f(30, 30));
         color1Rect.setFillColor(sf::Color::Yellow);
@@ -40,25 +42,42 @@ class World{
                 if(private_grid[i][j+1] == 0){
                         grid[i][j] = 0;
                         grid[i][j+1] = 1;
+                        sf::Color kolor = colorGrid[i][j];
+                        colorGrid[i][j] = sf::Color::Transparent;
+                        colorGrid[i][j+1] = kolor;
+
                 }
                 else if(private_grid[i+1][j+1] == 0 && private_grid[i-1][j+1] == 0){
                     bool direction = rand() % 2; 
                     if(direction == 0 ){
                         grid[i][j] =0;
                         grid[i-1][j+1] = 1;
+                        sf::Color kolor = colorGrid[i][j];
+                        colorGrid[i][j] = sf::Color::Transparent;
+                        colorGrid[i-1][j+1] = kolor;
+
                     }
                     else{
                         grid[i][j] = 0;
                         grid[i+1][j+1] = 1;
+                        sf::Color kolor = colorGrid[i][j];
+                        colorGrid[i][j] = sf::Color::Transparent;
+                        colorGrid[i+1][j+1] = kolor;
                     }
                 } 
                 else if(private_grid[i+1][j+1] == 0){
                     grid[i][j] =0;
                     private_grid[i+1][j+1] = 1;
+                    sf::Color kolor = colorGrid[i][j];
+                    colorGrid[i][j] = sf::Color::Transparent;
+                    colorGrid[i+1][j+1] = kolor;
                 }
                 else if(private_grid[i-1][j+1] ==0){
                     grid[i][j] = 0;
                     private_grid[i-1][j+1] = 1;
+                    sf::Color kolor = colorGrid[i][j];
+                    colorGrid[i][j] = sf::Color::Transparent;
+                    colorGrid[i-1][j+1] = kolor;
                 }
                 }
             }
@@ -74,7 +93,7 @@ class World{
                     sf::RectangleShape shape = sf::RectangleShape();
 
                     shape.setSize(sf::Vector2f(sandSize, sandSize));
-                    shape.setFillColor(currentColor);
+                    shape.setFillColor(colorGrid[i][j]);
                     shape.setPosition({i * sandSize, j * sandSize});
                     window.draw(shape); // assuming 'window' is a valid sf::RenderWindow instance
                     }
@@ -118,6 +137,7 @@ class World{
 
     void placeSand(int x, int y){
         grid[x][y] = 1;
+        colorGrid[x][y] = currentColor;
     }
 
     void reset(){ //clearing window
