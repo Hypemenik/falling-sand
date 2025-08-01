@@ -10,6 +10,7 @@ class World{
 
     int private_grid[width][height];
     int grid[width][height];
+    sf::Color colorGrid[width][height];
     
     
     public:
