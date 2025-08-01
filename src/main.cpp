@@ -24,6 +24,7 @@ class World{
             for (int j = 0; j < height-1; j++){
                 private_grid[i][j] = 0;
                 grid[i][j] = 0;
+                colorGrid[i][j] = sf::Color::Transparent;
             }
         color1Rect.setSize(sf::Vector2f(30, 30));
         color1Rect.setFillColor(sf::Color::Yellow);
@@ -41,12 +42,14 @@ class World{
                 if(private_grid[i][j+1] == 0){
                         grid[i][j] = 0;
                         grid[i][j+1] = 1;
+
                 }
                 else if(private_grid[i+1][j+1] == 0 && private_grid[i-1][j+1] == 0){
                     bool direction = rand() % 2; 
                     if(direction == 0 ){
                         grid[i][j] =0;
                         grid[i-1][j+1] = 1;
+
                     }
                     else{
                         grid[i][j] = 0;
