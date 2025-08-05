@@ -2,6 +2,8 @@
 
 
 ![](https://github.com/Hypemenik/falling-sand/blob/main/src/fallingsand.gif)
+OpenglVersion:
+![](https://github.com/Hypemenik/falling-sand/blob/main/src/falingsand_opengl.gif)
 
 A simple 2D falling sand simulation built with SFML and C++. This project demonstrates basic particle simulation principles, including gravity and simple collision detection, allowing users to interactively "draw" sand particles that fall and accumulate.
 
